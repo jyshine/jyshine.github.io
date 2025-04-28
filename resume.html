@@ -409,7 +409,7 @@
                 { name: '오케스트로', start: '2024-01', end: '2025-05', color: '#4612f3', description: '재직중', period: '2024-01~2025-05', why:'재직중'}
             ];
 
-            // 차트 생성
+            // 차트
             const margin = { top: 20, right: 30, bottom: 30, left: 100 };
             const width = 800 - margin.left - margin.right;
             const height = 200 - margin.top - margin.bottom;
@@ -426,8 +426,11 @@
             const parseDate = d3.timeParse("%Y-%m");
             const formatDate = d3.timeFormat("%Y-%m");
 
+            const minDate = d3.min(data, d => parseDate(d.start));
+            const maxDate = d3.max(data, d => parseDate(d.end));
+
             const x = d3.scaleTime()
-                .domain([parseDate('2017-05'), parseDate('2024-01')])
+                .domain([d3.timeMonth.offset(minDate, -1), d3.timeMonth.offset(maxDate, 1)]) // 시작 한 달 전, 끝 한 달 후
                 .range([0, width]);
 
             const y = d3.scaleBand()
